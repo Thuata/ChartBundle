@@ -1,0 +1,3 @@
+thuata_charts_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: ThuataChartsBundle:Default:index }
