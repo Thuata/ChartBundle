@@ -2,7 +2,8 @@
 
 namespace Thuata\Bundle\ChartsBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use ArrayObject;
+use Thuata\Bundle\ChartsBundle\Exception\NoChartTypeException;
 
 /**
  * Abstract chart class definition
@@ -16,7 +17,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-abstract class AbstractChart {
+abstract class AbstractChart
+{
+    const CHART_TYPE = 'Abstract';
 
     /**
      * @var string
@@ -27,7 +30,7 @@ abstract class AbstractChart {
      */
     private $summary;
     /**
-     * @var ArrayCollection
+     * @var ArrayObject
      */
     private $data;
 
@@ -35,6 +38,19 @@ abstract class AbstractChart {
      * Constructor. Protected to avoid "new" calls. Use factory() static method to instanciate a chart
      */
     protected function __construct() {
+        if (self::CHART_TYPE === $this->getChartType()) {
+            throw NoChartTypeException::factory();
+        }
+    }
+
+    /**
+     * Gets the chart type
+     *
+     * @return string
+     */
+    public function getChartType()
+    {
+        return static::CHART_TYPE;
     }
 
     /**
@@ -88,11 +104,11 @@ abstract class AbstractChart {
     /**
      * Sets the data
      *
-     * @param ArrayCollection $data
+     * @param ArrayObject $data
      *
      * @return AbstractChart
      */
-    public function setData(ArrayCollection $data)
+    public function setData(ArrayObject $data)
     {
         $this->data = $data;
 
@@ -114,17 +130,17 @@ abstract class AbstractChart {
      *
      * @param string          $title
      * @param string          $summary
-     * @param ArrayCollection $data
+     * @param ArrayObject $data
      *
      * @return AbstractChart
      */
-    public static function factory($title, $summary, ArrayCollection $data = null)
+    public static function factory($title, $summary, ArrayObject $data = null)
     {
         $chart = new static();
 
         $chart->setTile($title);
         $chart->setSummary($summary);
-        if ($data instanceof ArrayCollection) {
+        if ($data instanceof ArrayObject) {
             $chart->setData($data);
         }
 

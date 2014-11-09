@@ -3,9 +3,8 @@
 namespace Thuata\Bundle\ChartsBundle\Tests\Entity;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-//use Thuata\Bundle\ChartsBundle\Entity\Chart;
 use Thuata\Bundle\ChartsBundle\Tests\Entity\TestEntity;
-use Doctrine\Common\Collections\ArrayCollection;
+use ArrayObject;
 
 /**
  * Test for PieChart
@@ -131,11 +130,11 @@ class ChartTest extends KernelTestCase
     /**
      * Makes test Data
      *
-     * @return ArrayCollection
+     * @return ArrayObject
      */
     protected function getTestData()
     {
-        $data = new ArrayCollection();
+        $data = new ArrayObject();
 
         foreach ($this->dataMap as $entityData) {
             $entity = TestEntity::factory()
@@ -146,7 +145,7 @@ class ChartTest extends KernelTestCase
                     ->setName($entityData[self::NAME_KEY])
                     ->setQuantity($entityData[self::QUANTITY_KEY]);
 
-            $data->add($entity);
+            $data[] = $entity;
         }
 
         return $data;
@@ -159,7 +158,7 @@ class ChartTest extends KernelTestCase
     {
         $data = $this->getTestData();
 
-        $this->assertTrue($data instanceof ArrayCollection);
+        $this->assertTrue($data instanceof ArrayObject);
     }
 
     /**

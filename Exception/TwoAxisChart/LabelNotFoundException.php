@@ -2,7 +2,7 @@
 
 namespace Thuata\Bundle\ChartsBundle\Exception;
 
-use Thuata\Bundle\ChartsBundle\Exception\ExceptionTrait;
+use Thuata\Bundle\ChartsBundle\Exception\InvalidArgumentException;
 
 /**
  * Invalid argument exception definition
@@ -16,10 +16,8 @@ use Thuata\Bundle\ChartsBundle\Exception\ExceptionTrait;
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-class LogicException extends \LogicException
+class LabelNotFoundException extends InvalidArgumentException
 {
-    use ExceptionTrait;
-
-    const MESSAGE = 'Logic error';
-    const CODE = 111;
+    const MESSAGE = 'Can\'t compute the label. Set the label property to the chart with setLabelProperty() method or implement the __toString magic method to your entity.';
+    const CODE = 301;
 }

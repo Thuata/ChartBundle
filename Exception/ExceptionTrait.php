@@ -14,17 +14,17 @@ namespace Thuata\Bundle\ChartsBundle\Exception;
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-class ExceptionTrait {
-    const MESSAGE = 'Unrecognized exception';
-    const CODE = 0;
-
+trait ExceptionTrait
+{
     /**
-     * Constructor
+     * Factory
      *
      * @param \Exception $previous
+     *
+     * @return \Exception
      */
-    function __construct(\Exception $previous = null) {
-        parent::__construct(static::MESSAGE, static::CODE, $previous);
+    public static function factory(\Exception $previous = null) {
+        return new static(static::MESSAGE, static::CODE, $previous);
     }
 
 }

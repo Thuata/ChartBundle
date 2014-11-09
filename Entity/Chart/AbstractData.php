@@ -2,7 +2,7 @@
 
 namespace Thuata\Bundle\ChartsBundle\Entity\Chart;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use ArrayObject;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Thuata\Bundle\ChartsBundle\Exception\InvalidComputedTypeException;
 
@@ -18,7 +18,7 @@ use Thuata\Bundle\ChartsBundle\Exception\InvalidComputedTypeException;
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-abstract class AbstractData
+abstract class AbstractData extends \ArrayObject
 {
 
     /**
@@ -52,20 +52,13 @@ abstract class AbstractData
     }
 
     /**
-     * Constructor
-     */
-    protected function __construct()
-    {
-    }
-
-    /**
      * Sets the entities that constitute the data
      *
-     * @param ArrayCollection $entities
+     * @param mixed $entities
      *
      * @return AbstractChartData
      */
-    public function setEntities(ArrayCollection $entities)
+    public function setEntities($entities)
     {
         $this->entities = $entities;
 
@@ -87,7 +80,7 @@ abstract class AbstractData
     /**
      * Gets the data
      *
-     * @return ArrayCollection
+     * @return ArrayObject
      */
     public function getData()
     {
@@ -103,7 +96,7 @@ abstract class AbstractData
     {
         $this->data = $this->getComputedData();
 
-        if (!$this->data instanceof ArrayCollection) {
+        if (!$this->data instanceof ArrayObject) {
             throw new InvalidComputedTypeException();
         }
 
@@ -120,11 +113,11 @@ abstract class AbstractData
     /**
      * Factory
      *
-     * @param ArrayCollection $entities
+     * @param mixed $entities
      *
      * @return AbstractChartData
      */
-    public static function factory(ArrayCollection $entities = null)
+    public static function factory($entities = null)
     {
         $chartData = new static();
 

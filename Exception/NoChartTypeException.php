@@ -2,10 +2,8 @@
 
 namespace Thuata\Bundle\ChartsBundle\Exception;
 
-use Thuata\Bundle\ChartsBundle\Exception\ExceptionTrait;
-
 /**
- * Invalid argument exception definition
+ * Logic exception for charts, triggered if chart has not chart type constant
  *
  * @author Anthony Maudry <anthony.maudry@thuata.com>
  * @copyright (c) 2014, Anthony Maudry
@@ -16,10 +14,8 @@ use Thuata\Bundle\ChartsBundle\Exception\ExceptionTrait;
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-class LogicException extends \LogicException
+class NoChartTypeException extends LogicException
 {
-    use ExceptionTrait;
-
-    const MESSAGE = 'Logic error';
-    const CODE = 111;
+    const MESSAGE = 'No type provided for the chart. You should either devine the CHART_TYPE class constant or override the getChartType() method.';
+    const CODE = 112;
 }

@@ -2,9 +2,9 @@
 
 namespace Thuata\Bundle\ChartsBundle\Entity\Chart\PieChart;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use ArrayObject;
 use Thuata\Bundle\ChartsBundle\Entity\Chart\AbstractData;
-use InvalidArgumentException;
+use Thuata\Bundle\ChartsBundle\Exception\InvalidPropertyTypeException;
 
 /**
  * Pie Chart Data definition
@@ -37,12 +37,12 @@ class Data extends AbstractData
      *
      * @return \Thuata\Bundle\ChartsBundle\Entity\Chart\PieChart\Data
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyTypeException
      */
     public function setGroupingProperty($property)
     {
         if (!is_string($property)) {
-            throw new InvalidArgumentException();
+            throw InvalidPropertyTypeException::factory();
         }
         $this->groupingProperty = $property;
 
@@ -70,14 +70,14 @@ class Data extends AbstractData
      *
      * @return \Thuata\Bundle\ChartsBundle\Entity\Chart\PieChart\Data
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyTypeException
      */
     public function setSummingProperty($property)
     {
         if (!is_string($property) and !is_null($property)) {
-            throw new InvalidArgumentException();
+            throw InvalidPropertyTypeException::factory();
         }
-        
+
         $this->summingProperty = $property;
 
         $this->computeData();
@@ -98,14 +98,16 @@ class Data extends AbstractData
     /*
      * Computes the data
      *
-     * @return ArrayCollection
+     * @return ArrayObject
      */
     protected function getComputedData()
     {
         if (!$this->getGroupingProperty() or !$this->getEntities()) {
-            return new ArrayCollection();
+            return new ArrayObject();
         }
+
         $data = array();
+
         foreach ($this->getEntities() as $entity) {
             $entry = $this->getPropertyValue($entity, $this->getGroupingProperty());
 
@@ -117,13 +119,12 @@ class Data extends AbstractData
             if (!array_key_exists($entry, $data)) {
                 $data[$entry] = new Data\Digit();
                 $data[$entry]->setName($entry)
-                             ->setValue(0.0)
-                             ->setUnit('');
+                             ->setValue(0.0);
             }
 
             $data[$entry]->incrementValue($value);
         }
 
-        return new ArrayCollection(array_values($data));
+        return new ArrayObject(array_values($data));
     }
 }

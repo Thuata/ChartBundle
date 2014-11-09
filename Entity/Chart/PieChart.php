@@ -16,5 +16,7 @@ use Thuata\Bundle\ChartsBundle\Entity\AbstractChart;
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-class PieChart extends AbstractChart {
+class PieChart extends AbstractChart
+{
+    const CHART_TYPE = 'Pie Chart';
 }
