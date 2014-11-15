@@ -3,8 +3,10 @@
 namespace Thuata\Bundle\ChartsBundle\Entity\Chart;
 
 use ArrayObject;
+use JsonSerializable;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Thuata\Bundle\ChartsBundle\Exception\InvalidComputedTypeException;
+use Thuata\Bundle\ChartsBundle\Entity\Color;
 
 /**
  * Abstract Chart Data definition
@@ -18,7 +20,7 @@ use Thuata\Bundle\ChartsBundle\Exception\InvalidComputedTypeException;
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-abstract class AbstractData extends \ArrayObject
+abstract class AbstractData extends ArrayObject implements JsonSerializable
 {
 
     /**
@@ -26,9 +28,13 @@ abstract class AbstractData extends \ArrayObject
      */
     private $entities;
     /**
-     * @var ArrayCollection
+     * @var ArrayObject
      */
     private $data;
+    /**
+     * @var Color
+     */
+    private $mainColor;
 
     /**
      * Gets the value of an entity property
@@ -70,7 +76,7 @@ abstract class AbstractData extends \ArrayObject
     /**
      * Gets the entities that constitute the data
      *
-     * @return ArrayCollection
+     * @return mixed
      */
     public function getEntities()
     {
@@ -87,6 +93,20 @@ abstract class AbstractData extends \ArrayObject
         return $this->data;
     }
 
+    public function setMainColor(Color $color)
+    {
+        $this->mainColor = $color;
+    }
+
+    public function getMainColor()
+    {
+        if (is_null($this->mainColor)) {
+            $this->mainColor = Color::factory();
+        }
+
+        return $this->mainColor;
+    }
+
     /**
      * Computes the data
      *
@@ -100,6 +120,14 @@ abstract class AbstractData extends \ArrayObject
             throw new InvalidComputedTypeException();
         }
 
+        $nbColors = $this->data->count();
+
+        $colors = $this->getMainColor()->getPanelFromColor($nbColors);
+
+        foreach ($this->data as $key => /* @var $data Data\AbstractDigit */ $data) {
+            $data->setColor($colors[$key]);
+        }
+
         return $this;
     }
 
@@ -109,6 +137,16 @@ abstract class AbstractData extends \ArrayObject
      * @return ArrayCollection
      */
     abstract protected function getComputedData();
+
+    /**
+     * {@inheritDoc}
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            'data' => $this->getData()
+        );
+    }
 
     /**
      * Factory

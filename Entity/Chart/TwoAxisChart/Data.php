@@ -7,7 +7,8 @@ use Closure;
 use Thuata\Bundle\ChartsBundle\Entity\Chart\AbstractData;
 use Thuata\Bundle\ChartsBundle\Entity\Chart\TwoAxisChart\Data\Digit;
 use InvalidArgumentException;
-use Thuata\Bundle\ChartsBundle\Exception\LabelNotFoundException;
+//use Thuata\Bundle\ChartsBundle\Exception\LabelNotFoundException;
+use Thuata\Bundle\ChartsBundle\Entity\Color;
 
 /**
  * Pie Chart Data definition
@@ -42,6 +43,16 @@ class Data extends AbstractData
      * @var string
      */
     private $labelProperty;
+
+    /**
+     * @var Color;
+     */
+    private $color;
+
+    /**
+     * @var string
+     */
+    private $label;
 
     /**
      * Sets the property for x-axis
@@ -158,6 +169,54 @@ class Data extends AbstractData
     }
 
     /**
+     * Sets the color of the data
+     *
+     * @param Color $color
+     *
+     * @return Data
+     */
+    public function setColor(Color $color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Gets the color of the data
+     *
+     * @param Color $color
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * Sets the label of the data
+     *
+     * @param string $label
+     *
+     * @return Data
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Sets the label of the data
+     *
+     * @param Color $color
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
      * Gets the value for x-axis from an entity
      *
      * @param mixed $entity
@@ -247,5 +306,17 @@ class Data extends AbstractData
         }
 
         return new ArrayObject(array_values($array));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            'color' => $this->getColor(),
+            'label' => $this->getLabel(),
+            'data' => $this->getData()
+        );
     }
 }

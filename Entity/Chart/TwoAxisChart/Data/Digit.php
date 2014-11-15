@@ -116,4 +116,16 @@ class Digit extends AbstractDigit
     {
         return $this->label;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            'label' => $this->getLabel(),
+            'x' => $this->getXAxisValue(),
+            'y' => $this->getYAxisValue()
+        );
+    }
 }

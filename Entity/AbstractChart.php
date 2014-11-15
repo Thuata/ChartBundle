@@ -3,6 +3,7 @@
 namespace Thuata\Bundle\ChartsBundle\Entity;
 
 use ArrayObject;
+use JsonSerializable;
 use Thuata\Bundle\ChartsBundle\Exception\NoChartTypeException;
 
 /**
@@ -17,7 +18,7 @@ use Thuata\Bundle\ChartsBundle\Exception\NoChartTypeException;
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-abstract class AbstractChart
+abstract class AbstractChart implements JsonSerializable
 {
     const CHART_TYPE = 'Abstract';
 
@@ -118,7 +119,7 @@ abstract class AbstractChart
     /**
      * Gets the title
      *
-     * @return type
+     * @return Chart\AbstractData
      */
     public function getData()
     {
@@ -145,5 +146,19 @@ abstract class AbstractChart
         }
 
         return $chart;
+    }
+
+    /**
+     * Gets the array to serialize as JSON file
+     *
+     * @return array
+     */
+    public function jsonSerialize() {
+        return array(
+            'type' => $this->getChartType(),
+            'title' => $this->getTitle(),
+            'summary' => $this->getSummary(),
+            'data' => $this->getData()
+        );
     }
 }

@@ -92,4 +92,16 @@ class Digit extends AbstractDigit
     {
         return $this->value;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            'name' => $this->getName(),
+            'value' => $this->getValue(),
+            'color' => $this->getColor()
+        );
+    }
 }
