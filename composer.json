@@ -1,0 +1,26 @@
+{
+    "name": "thuata/chartbundle",
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "description": "This bundle provides php classes to design charts, twig views and javascript to draw them.",
+    "homepage" : "https://github.com/Thuata/ChartBundle",
+    "keywords" : ["chart"],
+    
+    "authors": [
+        {
+            "name": "Anthony Maudry",
+            "email": "anthony.maudry@thuata.com"
+        }
+    ],
+
+    "autoload": {
+        "psr-0": { "Thuata\\Bundles\\ChartsBundle": "" }
+    },
+
+    "target-dir": "Thuata/Bundles/ChartsBundle",
+    
+    "require": {
+        "php": ">=5.5",
+        "symfony/framework-bundle" : "~2.5"
+    }
+}
