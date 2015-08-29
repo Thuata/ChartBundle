@@ -21,6 +21,6 @@
     
     "require": {
         "php": ">=5.5",
-        "symfony/framework-bundle" : "~2.5"
+        "symfony/symfony" : "~2.6"
     }
 }
